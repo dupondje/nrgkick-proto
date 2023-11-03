@@ -1,0 +1,1317 @@
+syntax = "proto3";
+package nrgkick;
+
+// Base Messages
+message Nrgcp {
+    message Header {
+        enum Type {
+            UNKNOWN_TYPE = 0;
+            GET = 1;
+            UPDATE = 2;
+            NOTIFY = 3;
+            DELETE = 4;
+            ADD = 5;
+        }
+        enum Status {
+            UNKNOWN_STATUS = 0;
+            ACCEPTED = 1;
+            REJECTED = 2;
+        }
+        enum Service {
+            UNKNOWN_SERVICE = 0;
+            CHARGE_CONTROL = 1;
+            WIFI = 2;
+            DEVICE_CONTROL = 3;
+            NRGDP = 4;
+            OCPP = 5;
+            TIMEBASEDCHARGING = 6;
+            SOLAR_CHARGING = 7;
+            LICENSE_SERVICE = 8;
+            STATISTICS = 9;
+        }
+        enum Property {
+            UNKNOWN_PROPERTY = 0;
+            DYNAMIC_VALUES = 1;
+            SETTINGS = 2;
+            INFO = 3;
+            NAME = 4;
+            PASSWORD = 5;
+            CONNECT = 6;
+            SCAN = 7;
+            STATUS = 8;
+            APP_SETTINGS = 9;
+            DATA = 10;
+            CHARGE_VALUES = 11;
+            SELF_TESTS = 12;
+            CALIBRATION = 13;
+            INFO_EXTENDED = 14;
+            TEMPERATURES = 15;
+            CHARGE_RECORDS = 16;
+            CONFIGURATION = 17;
+            ACTIVATION = 18;
+            TIMEBASEDCHARGING_SETTINGS = 19;
+            RESET = 20;
+            CHARGE_RECORD = 21;
+            STATE = 22;
+            LOCATION = 23;
+            SOLARINVERTER_SCAN = 24;
+            PROFILES = 25;
+            PROFILE = 26;
+            DIAGNOSTIC_DATA = 27;
+            SYSTEM = 28;
+            ENERGY_METER_SCAN = 29;
+            LICENSE_SERVICES_TIME_LEFT_H = 30;
+            DEVICE_PING = 31;
+            SMART_LOAD_SCAN = 32;
+            SOLARBATTERY_SCAN = 33;
+            SOLAR_STATISTICS_DATA = 34;
+            SOLAR_STATISTICS_INFO = 35;
+            SOLAR_FULLSCAN = 36;
+        }
+        Type type = 1;
+        Status status = 2;
+        Service service = 3;
+        Property property = 4;
+        string uuid = 5;
+    }
+    message Metadata {
+        string requestId = 1;
+    }
+    message Payload {
+        NrgcpRequestRejectedPayload ERROR = 1;
+        NrgcpChargecontrolChargevaluesGetPayload CHARGECONTROL_CHARGEVALUES_GET = 6;
+        NrgcpChargecontrolSelftestsGetPayload CHARGECONTROL_SELFTESTS_GET = 7;
+        NrgcpChargecontrolCalibrationvaluesGetPayload CHARGECONTROL_CALIBRATIONVALUES_GET = 8;
+        NrgcpChargecontrolTemperaturesGetPayload CHARGECONTROL_TEMPERATURES_GET = 17;
+        NrgcpChargecontrolChargerecordsGetPayload CHARGECONTROL_CHARGERECORDS_GET = 18;
+        NrgcpChargecontrolDynamicvaluesGetPayload CHARGECONTROL_DYNAMICVALUES_GET = 2;
+        NrgcpChargecontrolSettingsGetPayload CHARGECONTROL_SETTINGS_GET = 3;
+        NrgcpChargecontrolSettingsUpdatePayload CHARGECONTROL_SETTINGS_UPDATE = 4;
+        NrgcpDevicecontrolInfoextendedGetPayload DEVICECONTROL_INFOEXTENDED_GET = 16;
+        NrgcpDevicecontrolInfoGetPayload DEVICECONTROL_INFO_GET = 5;
+        NrgcpDevicecontrolInfoUpdatePayload DEVICECONTROL_INFO_UPDATE = 10;
+        NrgcpWifiConnectUpdatePayload WIFI_CONNECT_UPDATE = 9;
+        NrgcpWifiScanGetPayload WIFI_SCAN_GET = 11;
+        NrgcpWifiStatusGetPayload WIFI_STATUS_GET = 12;
+        NrgcpNrgdpDataGetPayload NRGDP_DATA_GET = 13;
+        NrgcpDevicecontrolAppsettingsGetPayload DEVICECONTROL_APPSETTINGS_GET = 14;
+        NrgcpDevicecontrolAppsettingsUpdatePayload DEVICECONTROL_APPSETTINGS_UPDATE = 15;
+        NrgcpDevicecontrolActivationGetPayload DEVICECONTROL_ACTIVATION_GET = 19;
+        NrgcpTimebasedchargingChargingEventsGetPayload TIMEBASEDCHARGING_CHARGING_EVENTS_GET = 20;
+        NrgcpTimebasedchargingChargingEventsUpdatePayload TIMEBASEDCHARGING_CHARGING_EVENTS_UPDATE = 21;
+        NrgcpDevicecontrolResetUpdatePayload DEVICECONTROL_RESET_UPDATE = 22;
+        NrgcpChargecontrolChargerecordGetPayload CHARGECONTROL_CHARGERECORD_GET = 23;
+        NrgcpChargecontrolChargerecordGetPayloadRequest CHARGECONTROL_CHARGERECORD_GET_REQUEST = 24;
+        NrgcpTimebasedchargingStateGetPayload TIMEBASEDCHARGING_STATE_GET = 25;
+        NrgcpTimebasedchargingStateUpdatePayload TIMEBASEDCHARGING_STATE_UPDATE = 26;
+        NrgcpWifiLocationGetPayload WIFI_LOCATION_GET = 27;
+        NrgcpWifiLocationUpdatePayload WIFI_LOCATION_UPDATE = 28;
+        NrgcpSolarchargingSolarinverterscanGetPayload SOLARCHARGING_SOLARINVERTERSCAN_GET = 29;
+        NrgcpSolarchargingDataGetPayload SOLARCHARGING_DATA_GET = 30;
+        NrgcpSolarchargingProfilesGetPayload SOLARCHARGING_PROFILES_GET = 31;
+        bytes SOLARCHARGING_PROFILE_UPDATE = 32;
+        bytes SOLARCHARGING_PROFILE_DELETE = 33;
+        bytes SOLARCHARGING_STATE_GET = 34;
+        bytes SOLARCHARGING_STATE_UPDATE = 35;
+        bytes DEVICECONTROL_DIAGNOSTIC_DATA_GET = 36;
+        bytes DEVICECONTROL_SYSTEM_UPDATE = 37;
+        bytes SOLARCHARGING_ENERGYMETERSCAN_GET = 38;
+        bytes LICENSE_SERVICES_GET = 39;
+        bytes SOLARCHARGING_DEVICEPING_GET = 40;
+        bytes SOLARCHARGING_SMARTLOADSCAN_GET = 41;
+        bytes SOLARCHARGING_BATTERYSCAN_GET = 42;
+        bytes STATISTICS_SOLARSTATISTICSDATA_GET = 43;
+        bytes STATISTICS_SOLARSTATISTICSINFO_GET = 44;
+        bytes SOLARCHARGING_FULLSCAN_GET = 45;
+    }
+    Header header = 1;
+    Metadata metadata = 2;
+    Payload payload = 3;
+}
+
+// Payloads
+
+// NrgcpRequestRejectedPayload
+message NrgcpRequestRejectedPayload {
+    int32 code = 2;
+    string name = 1;;
+}
+
+// NrgcpChargecontrolChargevaluesGetPayload
+message NrgcpChargecontrolChargevaluesGetPayload {
+    message Phase {
+        float aPEnergy = 1;
+        float iRms = 9;
+        float pFMean = 5;
+        float pMeanF = 6;
+        float pMean = 2;
+        float qMean = 3;
+        float sMean = 4;
+        float uRms = 8;
+    }
+    optional Phase phaseA = 1;
+    optional Phase phaseB = 2;
+    optional Phase phaseC = 3;
+    optional Phase phaseTotal = 4;
+    float pMeanTMax = 5;
+    float gridFrequency = 6;
+    float iRmsN = 8;
+    bool evDiode = 9;
+    int32 ifidc = 12;
+    float chargedEnergy = 13;
+    int32 ifiac = 14;
+}
+
+// NrgcpChargecontrolSelftestsGetPayload
+message NrgcpChargecontrolSelftestsGetPayload {
+    bool fi = 1;
+    int32 peR = 13;
+    bool pe = 3;
+    bool relaisWeld = 2;
+    int32 relayState = 12;
+}
+
+// NrgcpChargecontrolCalibrationvaluesGetPayload
+message NrgcpChargecontrolCalibrationvaluesGetPayload {
+    int32 uCalibrateGainA = 1;
+    int32 uCalibrateGainB = 2;
+    int32 uCalibrateGainC = 3;
+    int32 uCalibrateOffsetA = 4;
+    int32 uCalibrateOffsetB = 5;
+    int32 uCalibrateOffsetC = 6;
+}
+
+// NrgcpChargecontrolTemperaturesGetPayload
+message NrgcpChargecontrolTemperaturesGetPayload {
+    float tempMainEm = 50;
+    float tempMainPcb = 48;
+    float tempMainPic = 49;
+    float tempSchuko1 = 55;
+    float tempSchuko2 = 56;
+    float tempSchuko3 = 57;
+    float tempStarPic = 54;
+    float tempStarSens1 = 51;
+    float tempStarSens2 = 52;
+    float tempStarSens3 = 53;
+}
+
+// NrgcpChargecontrolChargerecordsGetPayload
+message NrgcpChargecontrolChargerecordsGetPayload {
+    double totalChargedEnergyOverall = 1;
+}
+
+// NrgcpChargecontrolDynamicvaluesGetPayload
+message NrgcpChargecontrolDynamicvaluesGetPayload {
+    message ChargingData {
+        message Phase {
+            float current = 4;
+            float power = 1;
+            float voltage = 3;
+        }
+        float chargedEnergy = 14;
+        float chargingPower = 13;
+        float chargingRate = 11;
+        float chargingVoltage = 12;
+        float costs = 1;
+        float gridFrequency = 3;
+        float nCurrent = 4;
+        float peakPower = 5;
+        optional Phase phaseA = 6;
+        optional Phase phaseB = 7;
+        optional Phase phaseC = 8;
+        float remainKm = 9;
+        float totalChargedEnergy = 10;
+    }
+    message Temperatures {
+        float main1 = 1;
+        float smart1 = 4;
+        float star1 = 2;
+        float touch1 = 3;
+    }
+    optional ChargingData chargingData = 1;
+    optional Temperatures temperatures = 2;
+}
+
+// NrgcpChargecontrolSettingsGetPayload
+message NrgcpChargecontrolSettingsGetPayload {
+    message ChargeCurrent {
+        float maxAdapter = 5;
+        int32 max = 3;
+        int32 min = 2;
+        float type2Current = 6;
+        float userSet = 4;
+        int32 value =1;
+    }
+    message ChargingState {
+        NrgcpTypes.ChargingState value = 1;
+    }
+    message EnergyLimit {
+        NrgcpTypes.EnergyLimitMode limited = 4;
+        float max = 3;
+        float min = 2;
+        float value = 1;
+    }
+    message PhaseSwitch {
+        enum PhaseSwitchSelection {
+            STATE_UNKNOWN = 0;
+            STATE_1PHASE = 1;
+            STATE_2PHASE = 2;
+            STATE_3PHASE = 3;
+        }
+        PhaseSwitchSelection selection = 1;
+    }
+    optional ChargeCurrent chargeCurrent = 1;
+    int32 chargingCycle = 14;
+    optional ChargingState chargingState = 3;
+    bool cpPwmActive = 5;
+    NrgcpTypes.CpStatus cpStatus = 4;
+    optional EnergyLimit energyLimit = 2;
+    int32 errorCode = 10;
+    int32 latestRecordNumber = 8;
+    optional PhaseSwitch phaseSwitch = 15;
+    int32 warningCode = 13;
+}
+
+// NrgcpChargecontrolSettingsUpdatePayload
+message NrgcpChargecontrolSettingsUpdatePayload {
+    message ChargeCurrent {
+        float userSet = 2;
+        int32 value = 1;
+    }
+    message ChargingState {
+        NrgcpTypes.ChargingState value = 1;
+    }
+    message EnergyLimit {
+        NrgcpTypes.EnergyLimitMode limited = 2;
+        float value = 1;
+    }
+    message PhaseSwitch {
+        enum PhaseSelection {
+            STATE_UNKNOWN = 0;
+            STATE_1PHASE = 1;
+            STATE_2PHASE = 2;
+            STATE_3PHASE = 3;
+        }
+        PhaseSelection selection = 1;
+    }
+    optional ChargeCurrent chargeCurrent = 1;
+    optional ChargingState chargingState = 3;
+    optional EnergyLimit energyLimit = 2;
+    optional PhaseSwitch phaseSwitch = 4;
+}
+
+// NrgcpDevicecontrolInfoextendedGetPayload
+message NrgcpDevicecontrolInfoextendedGetPayload {
+    message Adapter {
+        message Type2 {
+            float chargingCurrent = 5;
+            float dutycycle = 3;
+            float frequency = 4;
+            int32 states = 1;
+            int32 version = 2;
+        }
+        int64 chargedEnergy = 7;
+        int32 connectionCycle = 6;
+        int32 countryCode = 3;
+        float maxCurrent = 2;
+        int32 phases = 5;
+        bytes serial = 1;
+        int32 tagPcbType = 4;
+        optional Type2 type2 = 8;
+    }
+    message MainController {
+        string hardwareVersion = 2;
+        string softwareVersion = 1;
+    }
+    message Star {
+        string hardwareVersion = 2;
+        string softwareVersion = 1;
+    }
+    message Touch {
+        string hardwareVersion = 2;
+        string softwareVersion = 1;
+    }
+    optional Adapter adapter = 8;
+    optional MainController mainController = 1;
+    int32 smCurRstReason = 9;
+    int32 smRstDeepsleeps = 12;
+    int32 smRstPanics = 10;
+    int32 smRstUnknown = 13;
+    int32 smRstWatchdogs = 11;
+    int32 smUptime = 14;
+    optional Star star = 2;
+    optional Touch touch = 3;
+}
+
+// NrgcpDevicecontrolInfoGetPayload
+message NrgcpDevicecontrolInfoGetPayload {
+    message ConfigMode {
+        enum ConfigModeState {
+            STATE_CONFIG_UNKNOWN = 0;
+            STATE_CONFIG_DISABLED = 1;
+            STATE_CONFIG_ENABLED = 2;
+        }
+        ConfigModeState state = 1;
+    }
+    message DeviceName {
+        int32 max = 3;
+        int32 min = 2;
+        string value = 1;
+    }
+    message DevicePassword {
+        int32 max = 3;
+        int32 min = 2;
+    }
+    message DevicePin {
+        int32 max = 16;
+        int32 min = 6;
+    }
+    message PhaseSwitch {
+        enum PhaseSwitchState {
+            STATE_PHASE_SWITCH_UNKNOWN = 0;
+            STATE_PHASE_SWITCH_DISABLED = 1;
+            STATE_PHASE_SWITCH_ENABLED = 2;
+        }
+        PhaseSwitchState state = 1;
+    }
+    optional NrgcpTypes.Cellular cellular = 11;
+    NrgcpTypes.CellularMode cellularMode = 12;
+    int32 chargeRecordsItemStorage = 15;
+    int32 chargeRecordsUnsynced = 14;
+    optional ConfigMode configState = 18;
+    NrgcpTypes.ConnectionInterface connectionInterface = 13;
+    optional DeviceName deviceName = 5;
+    optional DevicePassword devicePassword = 6;
+    optional DevicePin devicePin = 9;
+    optional NrgcpTypes.GPS gps = 10;
+    string hardwareRevision = 3;
+    NrgcpTypes.InitialSetupState initialSetup = 16;
+    optional PhaseSwitch phaseSwitch = 19;
+    NrgcpTypes.ProductType productType = 7;
+    string serialNumber = 1;
+    string softwareVersion = 4;
+    int32 statisticVersion = 17;
+    int32 utcTimestamp = 8;
+    string verificationCode = 2;
+}
+
+// NrgcpDevicecontrolInfoUpdatePayload
+message NrgcpDevicecontrolInfoUpdatePayload {
+    message ConfigMode {
+        enum ConfigModeState {
+            STATE_CONFIG_UNKNOWN = 0;
+            STATE_CONFIG_DISABLED = 1;
+            STATE_CONFIG_ENABLED = 2;
+        }
+        ConfigModeState state = 1;
+    }
+    message DeviceName {
+        string value = 1;
+    }
+    message DevicePin {
+        NrgcpTypes.AccessControlState accessControlState = 3;
+        string pin = 1;
+        string uuid = 2;
+    }
+    message DevicePassword {
+        string value = 1;
+    }
+    message PhaseSwitch {
+        enum PhaseSwitchState {
+            STATE_PHASE_SWITCH_UNKNOWN = 0;
+            STATE_PHASE_SWITCH_DISABLED = 1;
+            STATE_PHASE_SWITCH_ENABLED = 2;
+        }
+        PhaseSwitchState state = 1;
+    }
+    optional ConfigMode configMode = 6;
+    optional DeviceName deviceName = 1;
+    optional DevicePin devicePin = 4;
+    NrgcpTypes.InitialSetupState initialSetup = 5;
+    optional DevicePassword password = 2;
+    optional PhaseSwitch phaseSwitch = 7;
+    int32 utcTimestamp = 3;
+}
+
+// NrgcpWifiConnectUpdatePayload
+message NrgcpWifiConnectUpdatePayload {
+    string bssid = 3;
+    string key = 2;
+    string ssid = 1;
+}
+
+// NrgcpWifiScanGetPayload
+message NrgcpWifiScanGetPayload {
+    repeated NrgcpWifiTypes.WifiApRecordProto scanResults = 1;
+}
+
+// NrgcpWifiStatusGetPayload
+message NrgcpWifiStatusGetPayload {
+    optional NrgcpWifiTypes.WifiApRecordProto ap = 1;
+    repeated NrgcpWifiTypes.WifiApRecordProto aps = 2;
+}
+
+// NrgcpNrgdpDataGetPayload
+message NrgcpNrgdpDataGetPayload {
+    message Adapter {
+        message Type2 {
+            float chargingCurrent = 5;
+            float dutycycle = 3;
+            float frequency = 4;
+            int32 states = 1;
+            int32 version = 2;
+        }
+        int64 chargedEnergy = 7;
+        int32 connectionCycle = 6;
+        int32 countryCode = 3;
+        float maxCurrent = 2;
+        int32 phases = 5;
+        int32 schukoVersionId = 9;
+        bytes serial = 1;
+        int32 tagPcbType = 4;
+        optional Type2 type2 = 8;
+    }
+    message ChargingInfo {
+        int32 chargeDurationS = 8;
+        int32 chargingCycle = 1;
+        int32 currentEnergyCounter = 2;
+        int64 globalEnergyCounter = 3;
+        int32 latestRecordNumber = 6;
+        NrgcpTypes.MeasurementMode measurementMode = 4;
+        NrgcpTypes.SchukoState schukoState = 5;
+        int32 vehicleConnectTimeCounter = 7;
+    }
+    message CpData {
+        int32 cpNegVal = 2;
+        int32 cpPosVal = 1;
+        NrgcpTypes.PwmState cpPwmState = 3;
+    }
+    message DeviceSettings {
+        message ChargingLimit {
+            NrgcpTypes.EnergyLimitMode energyLimitMode = 2;
+            float limit = 1;
+        }
+        message Consumption {
+            NrgcpTypes.ConsumptionMode consumptionMode = 2;
+            float value = 1;
+        }
+        message NetworkSetting {
+            bytes ssid = 1;
+            optional NrgcpTypes.WifiLocation wifiLocation = 2;
+        }
+        message Services {
+            NrgcpTypes.ConfigurationStatus soc = 2;
+            NrgcpTypes.ConfigurationStatus tbc = 1;
+        }
+        float capacity = 6;
+        optional ChargingLimit chargingLimit = 8;
+        bytes cloudAccount = 10;
+        optional Consumption consumption = 7;
+        bytes currency = 5;
+        float energyCosts = 4;
+        repeated NetworkSetting networkSettings = 3;
+        optional Services services = 9;
+        NrgcpTypes.Timezone timezone = 2;
+        NrgcpTypes.UnitSystem unitSystem = 1;
+    }
+    message EnergyMeter {
+        message ActivePowerPhases {
+            float pL1 = 1;
+            float pL2 = 2;
+            float pL3 = 3;
+            float pSUM = 4;
+        }
+        message ApparentPowerPhases {
+            float sL1 = 1;
+            float sL2 = 2;
+            float sL3 = 3;
+            float sSUM = 4;
+        }
+        message CurrentPhases {
+            float iL1 = 1;
+            float iL2 = 2;
+            float iL3 = 3;
+            float iN = 4;
+        }
+        message PowerFactorPhases {
+            float phiL1 = 1;
+            float phiL2 = 2;
+            float phiL3 = 3;
+            float phiSUM = 4;
+        }
+        message ReactivePowerPhases {
+            float qL1 = 1;
+            float qL2 = 2;
+            float qL3 = 3;
+            float qSUM = 4;
+        }
+        optional ActivePowerPhases activePowerPhases = 2;
+        optional ApparentPowerPhases apparentPowerPhases = 4;
+        optional CurrentPhases currentPhases = 1;
+        float gridFrequency = 6;
+        optional PowerFactorPhases powerFactorPhases = 5;
+        optional ReactivePowerPhases reactivePowerPhases = 3;
+    }
+    message SoftwareHardwareVersion {
+        bytes hardwareVersion = 2;
+        bytes softwareVersion = 1;
+    }
+    message ModuleInitStates {
+        int32 nrgactivation = 1;
+        int32 nrgauthentication = 2;
+        int32 nrgawsiot = 3;
+        int32 nrgble = 4;
+        int32 nrgbootlinecommunicator = 5;
+        int32 nrgbootloader = 6;
+        int32 nrgdeviceinfo = 7;
+        int32 nrgi2C = 8;
+        int32 nrgreset = 9;
+        int32 nrgstatistics = 10;
+        int32 nrgsystem = 11;
+        int32 nrgtimebasedcharging = 12;
+        int32 nrgtimecontroller = 13;
+        int32 nrgupdater = 14;
+        int32 nrgwifi = 15;
+        int32 nrgwsserver = 16;
+    }
+    message SelfTestStatus {
+        int32 connectedPowerPhases = 12;
+        NrgcpTypes.ErrorCode errorCode = 5;
+        NrgcpTypes.SelfTest evDiode = 4;
+        NrgcpTypes.SelfTest fI = 1;
+        bytes nrgkickDebug1 = 13;
+        int32 pER = 6;
+        NrgcpTypes.SelfTest pE = 2;
+        int32 powerGridFreq = 14;
+        int32 powerGridVoltage = 11;
+        NrgcpTypes.RcdTrigger rcdTrigger = 7;
+        NrgcpTypes.SelfTest relais = 3;
+        NrgcpTypes.RelayState relayState = 9;
+        NrgcpTypes.WarningCode warningCode = 8;
+    }
+    message Temperatures {
+        float tempMainEm = 3;
+        float tempMainPcb = 1;
+        float tempMainPic = 2;
+        float tempSchuko1 = 8;
+        float tempSchuko2 = 9;
+        float tempSchuko3 = 10;
+        float tempStarPic = 7;
+        float tempStarSens1 = 4;
+        float tempStarSens2 = 5;
+        float tempStarSens3 = 6;
+    }
+    message VoltagePhases {
+        float phase1 = 1;
+        float phase2 = 2;
+        float phase3 = 3;
+
+    }
+    optional Adapter adapter = 27;
+    NrgcpTypes.CellularMode cellularMode = 20;
+    optional NrgcpTypes.Cellular cellular = 19;
+    NrgcpTypes.ChargeSocket chargeSocket = 4;
+    int32 chargingCurrent = 3;
+    optional ChargingInfo chargingInfo = 28;
+    bool cloudConnected = 17;
+    NrgcpTypes.ConnectionInterface connectionInterface = 21;
+    optional CpData cpData = 24;
+    NrgcpTypes.CpStatus cpStatus = 5;
+    bytes deviceName = 1;
+    int32 deviceOptionsConfig = 33;
+    optional DeviceSettings deviceSettings = 30;
+    optional EnergyMeter energyMeter = 26;
+    optional NrgcpTypes.GPS gps = 18;
+    optional SoftwareHardwareVersion mainController = 7;
+    optional ModuleInitStates moduleInitStates = 29;
+    int32 numConfiguredWifis = 32;
+    int32 numScannedWifis = 31;
+    int32 phaseSwitchControl = 34;
+    NrgcpTypes.ProductType productType = 2;
+    int32 rssiWifi = 22;
+    optional SelfTestStatus selfTestStatus = 23;
+    bytes serialNumber = 6;
+    optional SoftwareHardwareVersion smartModule = 10;
+    optional SoftwareHardwareVersion star = 9;
+    optional Temperatures temperatures = 25;
+    int32 timestamp = 16;
+    optional SoftwareHardwareVersion touch = 8;
+    int32 uptime = 15;
+    float voltagePcb = 14;
+    optional VoltagePhases voltagePhases = 12;
+}
+
+// NrgcpDevicecontrolAppsettingsGetPayload
+message NrgcpDevicecontrolAppsettingsGetPayload {
+    optional NrgcpTypes.BatteryCapacity batteryCapacity = 6;
+    NrgcpTypes.ConsumptionMode consumptionMode = 5;
+    optional NrgcpTypes.Consumption consumption = 2;
+    optional NrgcpTypes.Currency currency = 4;
+    optional NrgcpTypes.Efficacy efficacy = 1;
+    optional NrgcpTypes.PricePerKwh pricePerKwh = 3;
+    NrgcpTypes.Timezone timezone = 8;
+    NrgcpTypes.UnitSystem unitSystem = 7;
+}
+
+// NrgcpDevicecontrolAppsettingsUpdatePayload
+message NrgcpDevicecontrolAppsettingsUpdatePayload {
+    optional NrgcpTypes.BatteryCapacity batteryCapacity = 6;
+    NrgcpTypes.ConsumptionMode consumptionMode = 5;
+    optional NrgcpTypes.Consumption consumption = 2;
+    optional NrgcpTypes.Currency currency = 4;
+    optional NrgcpTypes.Efficacy efficacy = 1;
+    optional NrgcpTypes.PricePerKwh pricePerKwh = 3;
+    NrgcpTypes.Timezone timezone = 8;
+    NrgcpTypes.UnitSystem unitSystem = 7;
+}
+
+// NrgcpDevicecontrolActivationGetPayload
+message NrgcpDevicecontrolActivationGetPayload {
+    string activationCode = 1;
+}
+
+// NrgcpTimebasedchargingChargingEventsGetPayload
+message NrgcpTimebasedchargingChargingEventsGetPayload {
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventFriday = 5;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventMonday = 1;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventSaturday = 6;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventSunday = 7;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventThursday = 4;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventTuesday = 2;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventWednesday = 3;
+}
+
+// NrgcpTimebasedchargingChargingEventsUpdatePayload
+message NrgcpTimebasedchargingChargingEventsUpdatePayload {
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventFriday = 5;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventMonday = 1;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventSaturday = 6;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventSunday = 7;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventThursday = 4;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventTuesday = 2;
+    repeated NrgcpTypes.TimeBasedChargingEvent chargingEventWednesday = 3;
+}
+
+// NrgcpDevicecontrolResetUpdatePayload
+message NrgcpDevicecontrolResetUpdatePayload { 
+    NrgcpTypes.ResetType resetType = 1;
+}
+
+// NrgcpChargecontrolChargerecordGetPayload
+message NrgcpChargecontrolChargerecordGetPayload {
+    int32 chargeDurationS = 22;
+    int32 chargedEnergy = 4;
+    int32 chargingMode = 7;
+    int32 connectionInterface = 32;
+    string currency = 11;
+    int32 errorCode = 26;
+    int64 globalChargedEnergyCounterBegin = 2;
+    int64 globalChargedEnergyCounterEnd = 3;
+    bool isTimeSyncedAtStart = 30;
+    float latitude = 8;
+    float longitude = 9;
+    bool messSwapEn = 21;
+    float pricePerKwh = 10;
+    int32 recordNumber = 1;
+    int32 status = 25;
+    string tagSerialNumber = 13;
+    int32 tagType = 14;
+    int32 timeSource = 33;
+    int64 timestampBeginVehicleConnect = 24;
+    int64 timestampChargingEnd = 23;
+    int32 timestampEndOffset = 28;
+    int64 timestampEnd = 6;
+    int32 timestampStartOffset = 27;
+    int64 timestampStart = 5;
+    bool triedToSyncTime = 31;
+    int32 vehicleConnectCount = 29;
+    optional NrgcpTypes.WifiLocation wifiLocation = 12;
+}
+
+// NrgcpChargecontrolChargerecordGetPayloadRequest
+message NrgcpChargecontrolChargerecordGetPayloadRequest {
+    int32 recordNumber = 1;
+}
+
+// NrgcpTimebasedchargingStateGetPayload
+message NrgcpTimebasedchargingStateGetPayload {
+    message TimeBasedChargingState {
+        NrgcpTypes.TimeBasedChargingState value = 1;
+    }
+    optional NrgcpTypes.TimeBasedChargingEvent currentChargingEvent = 2;
+    optional TimeBasedChargingState timeBasedChargingState = 1;
+}
+
+// NrgcpTimebasedchargingStateUpdatePayload
+message NrgcpTimebasedchargingStateUpdatePayload {
+    message TimeBasedChargingState {
+        NrgcpTypes.TimeBasedChargingState value = 1;
+    }
+    optional TimeBasedChargingState timeBasedChargingState = 1;
+}
+
+// NrgcpWifiLocationGetPayload
+message NrgcpWifiLocationGetPayload {
+    repeated NrgcpTypes.WifiLocation locations = 1;
+}
+
+// NrgcpWifiLocationUpdatePayload
+message NrgcpWifiLocationUpdatePayload {
+    optional NrgcpTypes.WifiLocation location = 2;
+    string ssid = 1;
+}
+
+// NrgcpSolarchargingSolarinverterscanGetPayload
+message NrgcpSolarchargingSolarinverterscanGetPayload {
+    optional NrgcpSolarchargingTypes.SolarInverterInfo inverters = 1;
+}
+
+// NrgcpSolarchargingDataGetPayload
+message NrgcpSolarchargingDataGetPayload {
+    int32 batteryChargeWh = 12;
+    repeated NrgcpSolarchargingTypes.SolarBatteryData batteryData = 25;
+    int32 batteryDischargeWh = 11;
+    int32 chargedEnergyWh = 5;
+    int32 chargedFromExtSrcWh = 17;
+    int32 chargingState = 19;
+    int32 combBatPowerW = 7;
+    int32 combGridPowerW = 3;
+    int32 combLoadPowerW = 4;
+    int32 combPvEnergyWhDay = 2;
+    int32 combPvPowerW = 1;
+    int32 combSlLoadW = 8;
+    int32 dischargeToExtSinkWh = 18;
+    repeated NrgcpSolarchargingTypes.EnergyMeterData energyMeterData = 24;
+    int32 generateEnergyWh = 14;
+    int32 gridConsumptionWh = 9;
+    int32 gridFeedWh = 10;
+    repeated NrgcpSolarchargingTypes.SolarInverterData inverterData = 23;
+    int32 loadEnergyWh = 13;
+    int32 mainToEv = 22;
+    int32 producedSolarEnergyWh = 15;
+    int32 recChargingPowerW = 6;
+    int32 smState = 20;
+    int32 smToMainW = 21;
+    repeated NrgcpSolarchargingTypes.SmartLoadData smartLoadData = 26;
+    int32 smartLoadEnergyWh = 16;
+}
+
+// NrgcpSolarchargingProfilesGetPayload
+message NrgcpSolarchargingProfilesGetPayload {
+    int32 activeProfileIdx = 2;
+    optional NrgcpSolarchargingTypes.SolarProfile profiles = 1;
+}
+
+
+
+
+
+// Types
+message NrgcpTypes {
+    enum AccessControlState {
+        UNKNOWN_ACCESS_CONTROL_STATE = 0;
+        CHANGE_PIN = 1;
+        AUTHORIZE_CLIENT = 2;
+    }
+    message BatteryCapacity {
+        float max = 3;
+        float min = 2;
+        float value = 1;
+    }
+    message Cellular {
+        bytes imei = 2;
+        bytes imsi = 3;
+        bytes oper = 6;
+        int32 rssi = 7;
+        int32 signalStrength = 5;
+        bytes swRev = 4;
+    }
+    enum CellularMode {
+        CELLULAR_MODE_UNKNOWN = 0;
+        CELLULAR_MODE_GPRS = 1;
+        CELLULAR_MODE_NB_IOT = 2;
+        CELLULAR_MODE_CAT_M = 3;
+    }
+    enum ChargeSocket {
+        UNKNOWN_CHARGE_SOCKET = 0;
+        SOCKET_NONE = 1;
+        SOCKET_SCHUCKO = 2;
+        SOCKET_16A = 3;
+        SOCKET_32A = 4;
+        SOCKET_T2 = 5;
+    }
+    enum ChargingState {
+        UNKNOWN_CHARGING_STATE = 0;
+        CHARGING = 1;
+        PAUSE_CHARGING = 2;
+        NO_CHARGING = 3;
+    }
+    enum ConfigurationStatus {
+        UNKNOWN_CONFIGURATION_STATUS = 0;
+        ENABLED = 1;
+        DISABLED = 2;
+    }
+    enum ConnectionInterface {
+        CONNECTION_INTERFACE_UNKNOWN = 0;
+        CONNECTION_INTERFACE_WIFI = 1;
+        CONNECTION_INTERFACE_CELLULAR = 2;
+    }
+    message Consumption {
+        float max = 3;
+        float min = 2;
+        float value = 1;
+    }
+    enum ConsumptionMode {
+        UNKNOWN_CONSUMPTION_MODE = 0;
+        KWH_PER_100KM = 1;
+        KM_PER_KWH = 2;
+    }
+    enum CpStatus {
+        UNKNOWN_CP_STATUS = 0;
+        NRG_CP_A_STANDBY = 1;
+        NRG_CP_B_CONNECTED = 2;
+        NRG_CP_C_CHARGE_ACTIVE = 3;
+        NRG_CP_D_CHARGE_ACTIVE_VENTILATION = 4;
+        NRG_CP_E_NO_POWER = 5;
+        NRG_CP_F_ERROR = 6;
+        NRG_CP_E_WAKEUP = 7;
+    }
+    message Currency {
+        int32 max = 3;
+        int32 min = 2;
+        string value = 1;
+    }
+    message Efficacy {
+        float max = 3;
+        float min = 2;
+        float value = 1;
+    }
+    enum EnergyLimitMode {
+        ENERGY_LIMIT_MODE_UNKNOWN = 0;
+        ENERGY_LIMIT_MODE_LIMITED = 1;
+        ENERGY_LIMIT_MODE_UNLIMITED = 2;
+    }
+    enum ErrorCode {
+        UNKNOWN_ERROR_CODE = 0;
+        SYS_ERROR_CODE_NO_ERROR = 1;
+        SYS_ERROR_CODE_GENERAL_ERROR = 2;
+        SYS_ERROR_CODE_RCD = 3;
+        SYS_ERROR_CODE_CPSG_ERROR_UNKNOWN = 4;
+        SYS_ERROR_CODE_CPSG_ERROR_TRANSMISSION = 5;
+        SYS_ERROR_CODE_CPSG_ERROR_DIODE = 6;
+        SYS_ERROR_CODE_CPSG_ERROR_EV_6V = 7;
+        SYS_ERROR_CODE_CPSG_ERROR_EV_3V = 8;
+        SYS_ERROR_CODE_SELFTEST_PE_FAIL_ACKNOWLEDGED = 9;
+        SYS_ERROR_CODE_SELFTEST_PE_WAIT_FOR_ACKNOWLEDGE = 10;
+        SYS_ERROR_CODE_SELFTEST_PE_RAM = 11;
+        SYS_ERROR_CODE_SELFTEST_PE_RCD = 12;
+        SYS_ERROR_CODE_SELFTEST_RAM = 13;
+        SYS_ERROR_CODE_SELFTEST_RAM_RCD = 14;
+        SYS_ERROR_CODE_SELFTEST_RCD = 15;
+        SYS_ERROR_CODE_SELFTEST_PE_RCD_RAM = 16;
+        SYS_ERROR_CODE_SUPPLY_VOLTAGE_ERROR = 17;
+        SYS_ERROR_CODE_SUPPLY_PHASE_ERROR = 18;
+        SYS_ERROR_CODE_OVERVOLTAGE_SOURCE_PHASE = 19;
+        SYS_ERROR_CODE_UNDERVOLTAGE_SOURCE_PHASE = 20;
+        SYS_ERROR_NO_TAG_OF_CONNECTORUNIT_FOUND = 21;
+        SYS_ERROR_CODE_32A_ADAPTER_ON_16A_UNIT = 22;
+        SYS_ERROR_CODE_SELFTEST_PE_FAIL = 23;
+        SYS_ERROR_CODE_OVERVOLTAGE_SOURCE_PHASE_PE = 24;
+        SYS_ERROR_CODE_UNDERVOLTAGE_SOURCE_PHASE_PE = 25;
+        SYS_ERROR_CODE_GRID_UNDERFREQUENCY = 26;
+        SYS_ERROR_CODE_GRID_OVERFREQUENCY = 27;
+        SYS_ERROR_CODE_OVERTEMPERATURE_SYSTEM = 28;
+        SYS_ERROR_CODE_OVERTEMPERATURE_MAIN = 29;
+        SYS_ERROR_CODE_OVERTEMPERATURE_STAR = 30;
+        SYS_ERROR_CODE_OVERTEMPERATURE_SCHUKO = 31;
+        SYS_ERROR_CODE_SUPPLY_PHASE_LOSS_TRIGGERED = 32;
+        SYS_ERROR_CODE_UNPLUG_DETECTION_TRIGGERED = 33;
+    }
+    message GPS {
+        float hpa = 4;
+        double latitude = 3;
+        double longitude = 2;
+        int32 state = 1;
+        int32 timestamp = 6;
+        float vpa = 5;
+    }
+    enum InitialSetupState {
+        UNKNOWN_INIT_SETUP_STATE = 0;
+        INIT_SETUP_INCOMPLETE = 1;
+        INIT_SETUP_COMPLETE = 2;
+    }
+    enum MeasurementMode {
+        UNKNOWN_MESS_SWAP_STATE = 0;
+        NORMAL_OPERATION = 1;
+        INVERTED_PHASE_MEASUREMENT = 2;
+    }
+    message PricePerKwh {
+        float max = 3;
+        float min = 2;
+        float value = 1;
+    }
+    enum ProductType {
+        UNKNOWN_PRODUCT_TYPE = 0;
+        NRGKICK_16A = 1;
+        NRGKICK_32A = 2;
+        NRGKICK_16A_SIM = 3;
+        NRGKICK_32A_SIM = 4;
+    }
+    enum PwmState {
+        UNKNOWN_PWM_STATE = 0;
+        PWM_STATE_INACTIVE = 1;
+        PWM_STATE_ACTIVE = 2;
+    }
+    enum RcdTrigger {
+        UNKNOWN_RCD_TRIGGER = 0;
+        RCD_NO_VALUE_TRIGGER = 1;
+        RCD_30MA_TRIGGER = 2;
+        RCD_60MA_TRIGGER = 3;
+        RCD_150MA_TRIGGER = 4;
+        RCD_POS_6MA_TRIGGER = 5;
+        RCD_NEG_6MA_TRIGGER = 6;
+    }
+    enum RelayState {
+        UNKNOWN_RELAY_STATE = 0;
+        NO_RELAY = 1;
+        N_RELAY = 2;
+        L1_RELAY = 3;
+        L1_N_RELAY = 4;
+        L2_RELAY = 5;
+        L2_N_RELAY = 6;
+        L2_L1_RELAY = 7;
+        L2_L1_N_RELAY = 8;
+        L3_RELAY = 9;
+        L3_N_RELAY = 10;
+        L3_L1_RELAY = 11;
+        L3_L1_N_RELAY = 12;
+        L3_L2_RELAY = 13;
+        L3_L2_N_RELAY = 14;
+        L3_L2_L1_RELAY = 15;
+        L3_L2_L1_N_RELAY = 16;
+    }
+    enum ResetType {
+        UNKNOWN_RESET_TYPE = 0;
+        SOFT = 1;
+    }
+    enum SchukoState {
+        UNKNOWN_SCHUKO_REV_POL = 0;
+        CORRECT_POLARITY = 1;
+        REVERSE_POLARITY = 2;
+    }
+    enum SelfTest {
+        UNKNOWN_SELF_TEST = 0;
+        OK = 1;
+        NOK = 2;
+    }
+    message TimeBasedChargingEvent {
+        float chargeCurrent = 3;
+        int32 chargingType = 1;
+        float energyLimit = 4;
+        int32 time = 2;
+        int32 unlimitedCharging = 5;
+    }
+    enum TimeBasedChargingState {
+        UNKNOWN_TIME_BASED_CHARGING_STATUS = 0;
+        CHARGE_TIME_BASED = 1;
+        PAUSE_TIME_BASED_CHARGING = 2;
+    }
+    enum Timezone {
+        UNKNOWN_TIMEZONE_TYPE = 0;
+        IDLW_m12 = 1;
+        SST_m11 = 2;
+        HST_m10 = 3;
+        MIT_m9_30 = 4;
+        AKST_m9 = 5;
+        PST_m8 = 6;
+        MST_m7 = 7;
+        CST_m6 = 8;
+        EST_m5 = 9;
+        AST_m4 = 10;
+        NST_m3_30 = 11;
+        BRT_m3 = 12;
+        NDT_m2_30 = 13;
+        BRST_m2 = 14;
+        AZOT_m1 = 15;
+        GMT_0 = 16;
+        CET_p1 = 17;
+        CEST_p2 = 18;
+        EAT_p3 = 19;
+        IRST_p3_30 = 20;
+        GST_p4 = 21;
+        IRDT_p4_30 = 22;
+        PKT_p5 = 23;
+        IST_p5_30 = 24;
+        NPT_p5_45 = 25;
+        BIOT_p6 = 26;
+        MMT_p6_30 = 27;
+        THA_p7 = 28;
+        CT_p8 = 29;
+        CWST_p8_45 = 30;
+        JST_p9 = 31;
+        ACST_p9_30 = 32;
+        AEST_p10 = 33;
+        ACDT_p10_30 = 34;
+        AEDT_p11 = 35;
+        NZST_p12 = 36;
+        NZDT_p13 = 37;
+        CHADT_p13_45 = 38;
+        LINT_p14 = 39;
+        WET_0 = 40;
+        WEST_p1 = 41;
+    }
+    enum UnitSystem {
+        UNKNOWN_UNIT_SYSTEM = 0;
+        METRIC = 1;
+        IMPERIAL = 2;
+    }
+    enum WarningCode {
+        UNKNOWN_WARNING_CODE = 0;
+        SYS_WARNING_CODE_NO_WARNING = 1;
+        SYS_WARNING_CODE_CHARGING_WITHOUT_PE = 2;
+        SYS_WARNING_CODE_BLACKOUT_ACTIVE = 3;
+        SYS_WARNING_CODE_HIGHTEMPERATURE_SYSTEM = 4;
+        SYS_WARNING_CODE_HIGHTEMPERATURE_MAIN = 5;
+        SYS_WARNING_CODE_HIGHTEMPERATURE_STAR = 6;
+        SYS_WARNING_CODE_HIGHTEMPERATURE_SCHUKO = 7;
+    }
+    message WifiLocation {
+        int32 id = 1;
+        string name = 2;
+    }
+}
+
+message NrgcpWifiTypes {
+    message WifiApRecordProto {
+        message WifiCountry {
+            string cc = 1;
+            int32 maxTxPower = 4;
+            int32 nchan = 3;
+            int32 policy = 5;
+            int32 schan = 2;
+        }
+        int32 ant = 9;
+        int32 authmode = 6;
+        string bssid = 1;
+        WifiCountry country = 16;
+        int32 groupCipher = 8;
+        int32 pairwiseCipher = 7;
+        bool phy11B = 10;
+        bool phy11G = 11;
+        bool phy11N = 12;
+        bool phyLr = 13;
+        int32 primary = 3;
+        int32 reserved = 15;
+        int32 rssi = 5;
+        int32 second = 4;
+        string ssid = 2;
+        bool wps = 14;
+    }
+}
+
+message NrgcpSolarchargingTypes {
+    enum ApiType {
+        UNKNOWN_API_TYPE = 0;
+        JSON_API_TYPE = 1;
+        XML_API_TYPE = 2;
+        MODBUS_API_TYPE = 3;
+        MODBUS_SUB_0_0_API_TYPE = 4;
+        MODBUS_SUB_0_1_API_TYPE = 5;
+        MODBUS_SUB_0_2_API_TYPE = 6;
+        MODBUS_SUB_1_0_API_TYPE = 7;
+        MODBUS_SUB_1_1_API_TYPE = 8;
+        MODBUS_SUB_1_2_API_TYPE = 9;
+        MODBUS_SUB_2_0_API_TYPE = 10;
+        MODBUS_SUB_2_1_API_TYPE = 11;
+        MODBUS_SUB_2_2_API_TYPE = 12;
+        DXS_API_TYPE = 13;
+        UDP_API_TYPE = 14;
+    }
+    message AuthSettings {
+        string pw = 2;
+        string username = 1;
+    }
+    message BatteryInfo {
+        optional DeviceInfo deviceInfo = 1;
+        int32 maxCapacityWh = 2;
+    }
+    message BatterySocSettings {
+        bool enabled = 1;
+        int32 maxSoc = 3;
+        int32 minSoc = 2;
+    }
+    enum BrandType {
+        UNKNOWN_TYPE = 0;
+        DEMO = 1;
+        FRONIUS = 2;
+        SMA = 3;
+        KOSTAL = 4;
+        SOLAREDGE = 5;
+        MYPV = 6;
+        MEC = 7;
+        CUSTOM = 8;
+        HUAWEI = 9;
+    }
+    message ChargeMinSettings {
+        ChargeMinType chargeMinType = 1;
+        int32 maxBatDischargeW = 4;
+        int32 maxSupportW = 3;
+        SupportType supportType = 2;
+    }
+    enum ChargeMinType {
+        MIN_CHARGING_NEVER = 0;
+        MIN_CHARGING_SELECTIVE_WITHOUT_SUP_LIMIT = 1;
+        MIN_CHARGING_ALWAYS_WITHOUT_SUP_LIMIT = 2;
+        MIN_CHARGING_SELECTIVE_WITH_SUP_LIMIT = 3;
+        MIN_CHARGING_ALWAYS_WITH_SUP_LIMIT = 4;
+    }
+    message DeviceInfo {
+        ApiType apiType = 8;
+        AuthSettings authSettings = 9;
+        DeviceType deviceType = 10;
+        string host = 2;
+        int32 id = 7;
+        string model = 3;
+        string name = 4;
+        int32 port = 6;
+        BrandType type = 1;
+        string uniqueId = 5;
+    }
+    enum DeviceType {
+        DEVICE_TYPE_DATAMANAGER = 0;
+        DEVICE_TYPE_INVERTER = 1;
+        DEVICE_TYPE_ENERGY_METER = 2;
+        DEVICE_TYPE_BATTERY = 3;
+        DEVICE_TYPE_SMART_LOAD = 4;
+    }
+    message DynamicPeakManagerSettings {
+        bool enabled = 1;
+        int32 type = 2;
+    }
+    message EnergyMeterData {
+        int32 gridPowerW = 1;
+    }
+    message EnergyMeterInfo {
+        optional DeviceInfo deviceInfo = 1;
+        bool isInverted = 2;
+        MeterLocation meterLocation = 3;
+    }
+    message GridSettings {
+        bool autoGridOffset = 1;
+        int32 gridOffsetW = 3;
+        bool perPhaseOffset = 2;
+    }
+    message HoldTimings {
+        int32 holdOffTimeS = 1;
+        int32 holdOnTimeS = 2;
+    }
+    enum MeterLocation {
+        EM_LOCATION_UNKNOWN = 0;
+        EM_LOCATION_GRID = 1;
+        EM_LOCATION_LOAD = 2;
+        EM_LOCATION_AC_GENERATOR = 3;
+        EM_LOCATION_AC_GENERATOR_WITH_BAT = 4;
+        EM_LOCATION_SUB_DEVICE = 5;
+    }
+    enum PhaseSwitchExtTypes {
+        PHASE_SWITCH_EXT_TYPE_DISABLED = 0;
+        PHASE_SWITCH_EXT_TYPE_DELAY = 1;
+        PHASE_SWITCH_EXT_TYPE_DELAY_WITH_LIMIT = 2;
+        PHASE_SWITCH_EXT_TYPE_CUSTOM = 3;
+    }
+    message PhaseSwitchSettings {
+        int32 allowedPhasesMask = 4;
+        bool enabled = 1;
+        PhaseSwitchExtTypes extOptions = 3;
+        int32 fastSwitchThresholdDown = 8;
+        int32 fastSwitchThresholdUp = 7;
+        int32 reSwitchDelay = 9;
+        int32 supportiveBehaviour = 10;
+        int32 switchDelayDown = 6;
+        int32 switchDelayUp = 5;
+        PhaseSwitchTypes type = 2;
+    }
+    enum PhaseSwitchTypes {
+        PHASE_SWITCH_TYPE_MANUAL = 0;
+        PHASE_SWITCH_TYPE_AUTOMATIC = 1;
+        PHASE_SWITCH_TYPE_MIN_CURRENT_MAX_PHASES = 2;
+        PHASE_SWITCH_TYPE_MAX_CURRENT_MIN_PHASES = 3;
+    }
+    enum Priorities {
+        PRIORITY_NONE = 0;
+        PRIORITY_SMART_DEVICES = 1;
+        PRIORITY_BATTERY = 2;
+        PRIORITY_NRGKICK_25 = 3;
+        PRIORITY_NRGKICK_50 = 4;
+        PRIORITY_NRGKICK_75 = 5;
+        PRIORITY_NRGKICK = 6;
+    }
+    message SmartLoadData {
+        int32 slPowerW = 1;
+        float slTemp = 2;
+    }
+    message SmartLoadInfo {
+        optional DeviceInfo deviceInfo = 1;
+    }
+    message SmartLoadTempSettings {
+        bool enabled = 1;
+        int32 maxTemp = 3;
+        int32 minTemp = 2;
+    }
+    message SolarBatteryData {
+        int32 batPowerW = 1;
+        float batSoc = 2;
+    }
+    message SolarInverterData {
+        int32 energyWhDay = 2;
+        int32 powerW = 1;
+    }
+    message SolarInverterInfo {
+        optional DeviceInfo deviceInfo = 1;
+        int32 maxPowerAcW = 3;
+        int32 maxPowerDcW = 2;
+    }
+    message SolarLimits {
+        int32 feedInLimitW = 3;
+        float maxCurrentAmp = 5;
+        int32 maxPowerW = 2;
+        float minCurrentAmp = 4;
+        int32 minPowerW = 1;
+    }
+    message SolarProfile {
+        repeated BatteryInfo battery = 3;
+        repeated EnergyMeterInfo energyMeter = 2;
+        int32 id = 8;
+        string name = 7;
+        SolarSettings settings = 6;
+        repeated SmartLoadInfo smartLoad = 4;
+        repeated SolarInverterInfo solarInv = 1;
+        SolarStrategy strategy = 5;
+    }
+    message SolarSettings {
+        int32 avgLoadW = 1;
+        BatterySocSettings batterySocSettings = 8;
+        ChargeMinSettings chargeMinSettings = 6;
+        DynamicPeakManagerSettings dynamicPeakManagerSettings = 10;
+        int32 globalOffsetW = 2;
+        GridSettings gridSettings = 3;
+        HoldTimings holdTimings = 5;
+        SolarLimits limits = 4;
+        PhaseSwitchSettings phaseSwitchSettings = 11;
+        Priorities priorities = 7;
+        SmartLoadTempSettings smartloadTempSettings = 9;
+    }
+    message SolarStrategy {
+        SolarStrategyType type = 1;
+    }
+    enum SolarStrategyType {
+        UNKNOWN_STRATEGY = 0;
+        SURPLUS_STRATEGY = 1;
+        HUNDRED_PERCENT_STRATEGY = 2;
+        FEED_IN_LIMIT_STRATEGY = 3;
+    }
+    enum SupportType {
+        SUPPORT_EXTERNAL_POWER = 0;
+        SUPPORT_GRID_GRID_POWER = 1;
+    }
+}
