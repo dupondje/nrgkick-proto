@@ -1,6 +1,8 @@
 syntax = "proto3";
 package nrgkick;
 
+option go_package = "github.com/dupondje/nrgkick/protobuf/nrgcp";
+
 // Base Messages
 message Nrgcp {
     message Header {
@@ -109,20 +111,20 @@ message Nrgcp {
         NrgcpSolarchargingSolarinverterscanGetPayload SOLARCHARGING_SOLARINVERTERSCAN_GET = 29;
         NrgcpSolarchargingDataGetPayload SOLARCHARGING_DATA_GET = 30;
         NrgcpSolarchargingProfilesGetPayload SOLARCHARGING_PROFILES_GET = 31;
-        bytes SOLARCHARGING_PROFILE_UPDATE = 32;
-        bytes SOLARCHARGING_PROFILE_DELETE = 33;
-        bytes SOLARCHARGING_STATE_GET = 34;
-        bytes SOLARCHARGING_STATE_UPDATE = 35;
-        bytes DEVICECONTROL_DIAGNOSTIC_DATA_GET = 36;
-        bytes DEVICECONTROL_SYSTEM_UPDATE = 37;
-        bytes SOLARCHARGING_ENERGYMETERSCAN_GET = 38;
-        bytes LICENSE_SERVICES_GET = 39;
-        bytes SOLARCHARGING_DEVICEPING_GET = 40;
-        bytes SOLARCHARGING_SMARTLOADSCAN_GET = 41;
-        bytes SOLARCHARGING_BATTERYSCAN_GET = 42;
-        bytes STATISTICS_SOLARSTATISTICSDATA_GET = 43;
-        bytes STATISTICS_SOLARSTATISTICSINFO_GET = 44;
-        bytes SOLARCHARGING_FULLSCAN_GET = 45;
+        NrgcpSolarchargingProfileUpdatePayload SOLARCHARGING_PROFILE_UPDATE = 32;
+        NrgcpSolarchargingProfileDeletePayload SOLARCHARGING_PROFILE_DELETE = 33;
+        NrgcpSolarchargingStateGetPayload SOLARCHARGING_STATE_GET = 34;
+        NrgcpSolarchargingStateUpdatePayload SOLARCHARGING_STATE_UPDATE = 35;
+        NrgcpDevicecontrolDiagnosticdataGetPayload DEVICECONTROL_DIAGNOSTIC_DATA_GET = 36;
+        NrgcpDevicecontrolSystemUpdatePayload DEVICECONTROL_SYSTEM_UPDATE = 37;
+        NrgcpSolarchargingEnergymeterscanGetPayload SOLARCHARGING_ENERGYMETERSCAN_GET = 38;
+        NrgcpLicenseServicesGetPayload LICENSE_SERVICES_GET = 39;
+        NrgcpSolarchargingDevicepingGetPayload SOLARCHARGING_DEVICEPING_GET = 40;
+        NrgcpSolarchargingSmartloadscanGetPayload SOLARCHARGING_SMARTLOADSCAN_GET = 41;
+        NrgcpSolarchargingBatteryscanGetPayload SOLARCHARGING_BATTERYSCAN_GET = 42;
+        NrgcpStatisticsSolarstatisticsdataGetPayload STATISTICS_SOLARSTATISTICSDATA_GET = 43;
+        NrgcpStatisticsSolarstatisticsinfoGetPayload STATISTICS_SOLARSTATISTICSINFO_GET = 44;
+        NrgcpSolarchargingFullscanGetPayload SOLARCHARGING_FULLSCAN_GET = 45;
     }
     Header header = 1;
     Metadata metadata = 2;
@@ -802,6 +804,95 @@ message NrgcpSolarchargingProfilesGetPayload {
     optional NrgcpSolarchargingTypes.SolarProfile profiles = 1;
 }
 
+// NrgcpSolarchargingProfileUpdatePayload
+message NrgcpSolarchargingProfileUpdatePayload {
+    bool enabled = 3;
+    int32 idx = 1;
+    optional NrgcpSolarchargingTypes.SolarProfile profile = 2;
+}
+
+// NrgcpSolarchargingProfileDeletePayload
+message NrgcpSolarchargingProfileDeletePayload {
+    int32 idx = 1;
+}
+
+// NrgcpSolarchargingStateGetPayload
+message NrgcpSolarchargingStateGetPayload {
+    int32 activeProfile = 2;
+    optional NrgcpSolarchargingTypes.DeviceFailInfo deviceInfo = 3;
+    NrgcpSolarchargingTypes.SolarChargingState state = 1;
+}
+
+// NrgcpSolarchargingStateUpdatePayload
+message NrgcpSolarchargingStateUpdatePayload {
+    int32 activeProfile = 2;
+    NrgcpSolarchargingTypes.SolarChargingState state = 1;
+}
+
+// NrgcpDevicecontrolDiagnosticdataGetPayload
+message NrgcpDevicecontrolDiagnosticdataGetPayload {
+    message CpData {
+        NrgcpTypes.CpStatus code = 1;
+        int32 cpNegVal = 3;
+        int32 cpPosVal = 2;
+    }
+    int32 bleRssi = 8;
+    optional CpData cpData = 2;
+    int32 errorCode = 1;
+    int64 nrgkickDebug1 = 7;
+    int32 rcdTrigger = 3;
+    int32 relayState = 5;
+    int32 selfTestPeR = 6;
+    int32 warningCode = 4;
+}
+
+// NrgcpDevicecontrolSystemUpdatePayload
+message NrgcpDevicecontrolSystemUpdatePayload {
+    NrgcpTypes.RestartMode restartMode = 1;
+}
+
+// NrgcpSolarchargingEnergymeterscanGetPayload
+message NrgcpSolarchargingEnergymeterscanGetPayload {
+    optional NrgcpSolarchargingTypes.EnergyMeterInfo energyMeters = 1;
+}
+
+// NrgcpLicenseServicesGetPayload
+message NrgcpLicenseServicesGetPayload {
+    optional NrgcpLicenseServicesTypes.LicenseServices services = 1;
+}
+
+// NrgcpSolarchargingDevicepingGetPayload
+message NrgcpSolarchargingDevicepingGetPayload {
+    optional NrgcpSolarchargingTypes.DevicePing devicePing = 1;
+}
+
+// NrgcpSolarchargingSmartloadscanGetPayload
+message NrgcpSolarchargingSmartloadscanGetPayload {
+    optional NrgcpSolarchargingTypes.SmartLoadInfo smartLoads = 1;
+}
+
+// NrgcpSolarchargingBatteryscanGetPayload
+message NrgcpSolarchargingBatteryscanGetPayload {
+    optional NrgcpSolarchargingTypes.BatteryInfo batteryInfo = 1;
+}
+
+// NrgcpStatisticsSolarstatisticsdataGetPayload
+message NrgcpStatisticsSolarstatisticsdataGetPayload {
+    optional NrgcpStatisticsTypes.RequestInfo requestInfo = 1;
+    repeated NrgcpStatisticsTypes.SolarChargingStatistics solarStatistics = 2;
+}
+
+// NrgcpStatisticsSolarstatisticsinfoGetPayload
+message NrgcpStatisticsSolarstatisticsinfoGetPayload {
+    int32 newestTs = 3;
+    int32 numDataPoints = 1;
+    int32 oldestTs = 2;
+}
+
+// NrgcpSolarchargingFullscanGetPayload
+message NrgcpSolarchargingFullscanGetPayload {
+    optional NrgcpSolarchargingTypes.FullScanInfo fullScanInfo = 1;
+}
 
 
 
@@ -994,6 +1085,14 @@ message NrgcpTypes {
         UNKNOWN_RESET_TYPE = 0;
         SOFT = 1;
     }
+    enum RestartMode {
+        UNKNOWN_MODE = 0;
+        SMART_MODULE = 1;
+        MC_SOFT = 2;
+        MC_HARD = 3;
+        SMART_MODULE_MCS = 4;
+        SMART_MODULE_MCH = 5;
+    }
     enum SchukoState {
         UNKNOWN_SCHUKO_REV_POL = 0;
         CORRECT_POLARITY = 1;
@@ -1131,6 +1230,10 @@ message NrgcpSolarchargingTypes {
         string pw = 2;
         string username = 1;
     }
+    message BatteryFailInfo {
+        int32 id = 1;
+        string uniqueId = 2;
+    }
     message BatteryInfo {
         optional DeviceInfo deviceInfo = 1;
         int32 maxCapacityWh = 2;
@@ -1165,6 +1268,12 @@ message NrgcpSolarchargingTypes {
         MIN_CHARGING_SELECTIVE_WITH_SUP_LIMIT = 3;
         MIN_CHARGING_ALWAYS_WITH_SUP_LIMIT = 4;
     }
+    message DeviceFailInfo {
+        optional BatteryFailInfo batFail = 3;
+        optional EnergyMeterFailInfo emFail = 2;
+        optional InverterFailInfo invFail = 1;
+        optional SmartLoadFailInfo slFail = 4;
+    }
     message DeviceInfo {
         ApiType apiType = 8;
         AuthSettings authSettings = 9;
@@ -1184,6 +1293,13 @@ message NrgcpSolarchargingTypes {
         DEVICE_TYPE_BATTERY = 3;
         DEVICE_TYPE_SMART_LOAD = 4;
     }
+    message DevicePing {
+        optional BatteryInfo batInfo = 4;
+        optional EnergyMeterInfo emInfo = 3;
+        optional SolarInverterInfo invInfo = 2;
+        optional RequestInfo requestInfo = 1;
+        optional SmartLoadInfo slInfo = 5;
+    }
     message DynamicPeakManagerSettings {
         bool enabled = 1;
         int32 type = 2;
@@ -1191,10 +1307,30 @@ message NrgcpSolarchargingTypes {
     message EnergyMeterData {
         int32 gridPowerW = 1;
     }
+    message EnergyMeterFailInfo {
+        int32 id = 1;
+        string uniqueId = 2;
+    }
     message EnergyMeterInfo {
         optional DeviceInfo deviceInfo = 1;
         bool isInverted = 2;
         MeterLocation meterLocation = 3;
+    }
+    message FullScanInfo {
+        enum PingResult {
+            PING_SUCCESS = 0;
+            PING_API_DISABLED = 1;
+            PING_NOT_REACHABLE = 2;
+        }
+        repeated BatteryInfo batInfos = 8;
+        BrandType brandType = 2;
+        DeviceType deviceType = 1;
+        repeated EnergyMeterInfo emInfos = 7;
+        string host = 3;
+        repeated SolarInverterInfo invInfos = 6;
+        PingResult pingResult = 5;
+        int32 port = 4;
+        repeated SmartLoadInfo slInfos = 9;
     }
     message GridSettings {
         bool autoGridOffset = 1;
@@ -1204,6 +1340,10 @@ message NrgcpSolarchargingTypes {
     message HoldTimings {
         int32 holdOffTimeS = 1;
         int32 holdOnTimeS = 2;
+    }
+    message InverterFailInfo {
+        int32 id = 1;
+        string uniqueId = 2;
     }
     enum MeterLocation {
         EM_LOCATION_UNKNOWN = 0;
@@ -1237,6 +1377,13 @@ message NrgcpSolarchargingTypes {
         PHASE_SWITCH_TYPE_MIN_CURRENT_MAX_PHASES = 2;
         PHASE_SWITCH_TYPE_MAX_CURRENT_MIN_PHASES = 3;
     }
+    enum PingType {
+        PING_ALL_DEVICES = 0;
+        PING_INV = 1;
+        PING_EM = 2;
+        PING_BAT = 3;
+        PING_SL = 4;
+    }
     enum Priorities {
         PRIORITY_NONE = 0;
         PRIORITY_SMART_DEVICES = 1;
@@ -1246,9 +1393,23 @@ message NrgcpSolarchargingTypes {
         PRIORITY_NRGKICK_75 = 5;
         PRIORITY_NRGKICK = 6;
     }
+    message RequestInfo {
+        ApiType apiType = 3;
+        string authPw = 8;
+        string authUser = 7;
+        BrandType brandType = 1;
+        string host = 6;
+        PingType pingType = 2;
+        int32 port = 4;
+        int32 unitId = 5;
+    }
     message SmartLoadData {
         int32 slPowerW = 1;
         float slTemp = 2;
+    }
+    message SmartLoadFailInfo {
+        int32 id = 1;
+        string uniqueId = 2;
     }
     message SmartLoadInfo {
         optional DeviceInfo deviceInfo = 1;
@@ -1261,6 +1422,11 @@ message NrgcpSolarchargingTypes {
     message SolarBatteryData {
         int32 batPowerW = 1;
         float batSoc = 2;
+    }
+    enum SolarChargingState {
+        SOLAR_SERVICE_STATE_UNKNOWN = 0;
+        SOLAR_SERVICE_STATE_ENABLED = 1;
+        SOLAR_SERVICE_STATE_DISABLED = 2;
     }
     message SolarInverterData {
         int32 energyWhDay = 2;
@@ -1313,5 +1479,42 @@ message NrgcpSolarchargingTypes {
     enum SupportType {
         SUPPORT_EXTERNAL_POWER = 0;
         SUPPORT_GRID_GRID_POWER = 1;
+    }
+}
+
+// NrgcpLicenseServicesTypes
+message NrgcpLicenseServicesTypes {
+    message LicenseServiceInfo {
+        int32 serviceId = 1;
+        int32 timeLeftH = 2;
+    }
+    message LicenseServices {
+        int32 numOfActiveServices = 3;
+        int32 numOfServices = 2;
+        repeated LicenseServiceInfo serviceInfo = 1;
+    }
+}
+
+// NrgcpStatisticsTypes
+message NrgcpStatisticsTypes {
+    message RequestInfo {
+        int32 newestTs = 4;
+        int32 numDataPoints = 2;
+        int32 oldestTs = 3;
+        RequestType reqType = 1;
+    }
+    enum RequestType {
+        RAM_ALL = 0;
+        RAM_AREA = 1;
+    }
+    message SolarChargingStatistics {
+        int32 batSoc = 7;
+        int32 pBat = 5;
+        int32 pGrid = 3;
+        int32 pLoad = 4;
+        int32 pNrgkick = 2;
+        int32 pPv = 1;
+        int32 pSl = 6;
+        int32 ts = 8;
     }
 }
