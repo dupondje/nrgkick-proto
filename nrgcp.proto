@@ -136,7 +136,7 @@ message Nrgcp {
 // NrgcpRequestRejectedPayload
 message NrgcpRequestRejectedPayload {
     int32 code = 2;
-    string name = 1;;
+    string name = 1;
 }
 
 // NrgcpChargecontrolChargevaluesGetPayload
