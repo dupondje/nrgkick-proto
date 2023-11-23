@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kick UUIDs</title>
+    <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.2.5/dist/protobuf.min.js"></script>
+</head>
+<body>
+    <h1>UUID as a Service</h1>
+    <p>No warranty, nothing. Use at your own risk. Good luck! :-)</p>
+    <input type="text" id="ipInput" placeholder="Enter IP">
+    <input type="text" id="pinInput" placeholder="last 7 numbers of serial">
+    <input type="text" id="uuidInput" placeholder="set your UUID here">
+    <button id="connectButton">Kick!</button>
+    <p id="result"></p>
+
+    <script>
+        protobuf.load("https://raw.githubusercontent.com/dupondje/nrgkick-proto/main/nrgcp.proto", function(err, root) {
+            if (err) {
+                throw err;
+            }
+
+            window.Nrgcp = root.lookupType("nrgkick.Nrgcp");
+            window.Nrgcp_Header = root.lookupType("nrgkick.Nrgcp.Header");
+            window.Nrgcp_Metadata = root.lookupType("nrgkick.Nrgcp.Metadata");
+            window.Nrgcp_Payload = root.lookupType("nrgkick.Nrgcp.Payload");
+            window.Nrgcp_Payload_DeviceControl_Info_Update = root.lookupType("nrgkick.NrgcpDevicecontrolInfoUpdatePayload");
+            window.Nrgcp_Payload_DeviceControl_Info_Update_DevicePin = root.lookupType("nrgkick.NrgcpDevicecontrolInfoUpdatePayload.DevicePin");
+            window.Nrgcp_Types = root.lookupType("nrgkick.NrgcpTypes");
+
+        });
+
+        function blobToUint8Array(blob, callback) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const arrayBuffer = reader.result;
+                const uint8Array = new Uint8Array(arrayBuffer);
+                callback(uint8Array);
+            };
+            reader.onerror = function(error) {
+                console.error("Error reading blob as array buffer:", error);
+            };
+            reader.readAsArrayBuffer(blob);
+        }
+
+        document.getElementById('connectButton').addEventListener('click', function() {
+            var ip = document.getElementById('ipInput').value;
+            if(ip) {
+                var websocket = new WebSocket('ws://' + ip + ':8765');
+
+                var request = window.Nrgcp.create();
+                request.header = window.Nrgcp_Header.create()
+                request.metadata = window.Nrgcp_Metadata.create()
+                request.payload = window.Nrgcp_Payload.create()
+                request.payload.DEVICECONTROL_INFO_UPDATE = window.Nrgcp_Payload_DeviceControl_Info_Update.create()
+                request.payload.DEVICECONTROL_INFO_UPDATE.devicePin = window.Nrgcp_Payload_DeviceControl_Info_Update_DevicePin.create();
+
+                request.header.type = window.Nrgcp_Header.Type.UPDATE;
+                request.header.service = window.Nrgcp_Header.Service.DEVICE_CONTROL;
+                request.header.property = window.Nrgcp_Header.Property.INFO;
+
+                request.metadata.requestId = crypto.randomUUID().slice(0, 8);
+
+                request.payload.DEVICECONTROL_INFO_UPDATE.devicePin.accessControlState = window.Nrgcp_Types.AccessControlState.AUTHORIZE_CLIENT;
+                request.payload.DEVICECONTROL_INFO_UPDATE.devicePin.pin = document.getElementById('pinInput').value.toString();
+                request.payload.DEVICECONTROL_INFO_UPDATE.devicePin.uuid = document.getElementById('uuidInput').value.toString();
+
+                var buffer = Nrgcp.encode(request).finish();
+
+                websocket.addEventListener('open', (event) => {
+                    console.log("Connection opened:", event);
+                    websocket.send(buffer);
+                });
+
+                websocket.addEventListener('message', (event) => {
+                    console.log("Message received.", event);
+                    blobToUint8Array(event.data, function(uint8Array) {
+                        var response = window.Nrgcp.decode(uint8Array);
+                        console.log("Decoded response: ", response);
+                        if (response.header.status == window.Nrgcp_Header.Status.ACCEPTED
+                                && response.header.service == window.Nrgcp_Header.Service.DEVICE_CONTROL
+                                && response.header.type == window.Nrgcp_Header.Type.UPDATE
+                                && response.header.property == window.Nrgcp_Header.Property.INFO) {
+                            document.getElementById('result').innerHTML = "<h2>Kicked.</h2>";
+                        }
+                    });
+                });
+
+                websocket.addEventListener('close', (event) => {
+                    console.log("Connection closed.", event);
+                });
+            } else {
+                alert("Please enter a valid IP.");
+            }
+        });
+    </script>
+</body>
+</html>
