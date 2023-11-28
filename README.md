@@ -40,8 +40,7 @@ Then also a "metdata" with a "requestId", this to be able to match the response 
 }
 ```
 
-## UUID
-The UUID is generated when configuring the NRGKick/App for the first time.
-This UUID is the way it authenticates to your NRGKick device.
-I haven't found a way to generate a new UUID for custom usage.
-So if you want to use this proto in a tool, you need to capture traffic via tcpdump/wireshark and find out (with the wireshark plugin) which UUID is used. Then you can use that UUID in your own tool.
+# UUID
+In order to communicate with the NRGkick, a UUID is required. This UUID must be added to the NRGkick and subsequently specified during communication.
+
+The [index.html](./index.html) in this repository allows for generating and adding a new UUID via a web browser through the WebSocket protocol. Download this file to your computer and open it in your preferred web browser. Complete the form that appears on your screen, and kick the UUID into your charging cable as necessary.
