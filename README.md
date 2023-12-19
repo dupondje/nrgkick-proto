@@ -25,7 +25,7 @@ Every request had some header with the following fields:
 - "property" -> "DYNAMIC_VALUES"/"STATUS"/...
 - "uuid" -> UUID for authentication
 
-Then also a "metdata" with a "requestId", this to be able to match the response with the request.
+Then also a "metadata" with a "requestId", this to be able to match the response with the request.
 ```
 {
     "header": {
