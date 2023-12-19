@@ -334,6 +334,8 @@ message NrgcpDevicecontrolInfoextendedGetPayload {
         string softwareVersion = 1;
     }
     optional Adapter adapter = 8;
+    string ipAddress = 15;
+    string macAddress = 16;
     optional MainController mainController = 1;
     int32 smCurRstReason = 9;
     int32 smRstDeepsleeps = 12;
@@ -813,7 +815,12 @@ message NrgcpSolarchargingProfileUpdatePayload {
 
 // NrgcpSolarchargingProfileDeletePayload
 message NrgcpSolarchargingProfileDeletePayload {
+    enum DeleteType {
+        DELTE_TYPE_SOFT = 0;
+        DELTE_TYPE_HARD = 1;
+    }
     int32 idx = 1;
+    DeleteType deleteType = 2;
 }
 
 // NrgcpSolarchargingStateGetPayload
@@ -1104,16 +1111,29 @@ message NrgcpTypes {
         NOK = 2;
     }
     message TimeBasedChargingEvent {
+        enum ChargingType {
+            UNKNOWN_CHARGING_TYPE = 0;
+            CHARGE = 1;
+            PAUSE = 2;
+            SOLAR = 3;
+        }
+        enum TimeBasedChargingUnlimited {
+            UNKNOWN_TIME_BASED_CHARGING_VALUE = 0;
+            LIMITED = 1;
+            UNLIMITED = 2;
+        }
         float chargeCurrent = 3;
-        int32 chargingType = 1;
+        ChargingType chargingType = 1;
         float energyLimit = 4;
         int32 time = 2;
-        int32 unlimitedCharging = 5;
+        TimeBasedChargingUnlimited unlimitedCharging = 5;
+        int32 profileId = 6;
     }
     enum TimeBasedChargingState {
         UNKNOWN_TIME_BASED_CHARGING_STATUS = 0;
         CHARGE_TIME_BASED = 1;
         PAUSE_TIME_BASED_CHARGING = 2;
+        SOLAR_TIME_BASED_CHARGING = 3;
     }
     enum Timezone {
         UNKNOWN_TIMEZONE_TYPE = 0;
@@ -1239,7 +1259,9 @@ message NrgcpSolarchargingTypes {
         int32 maxCapacityWh = 2;
     }
     message BatterySocSettings {
+        bool considerMaxBatPower = 4;
         bool enabled = 1;
+        int32 maxBatChargePower = 5;
         int32 maxSoc = 3;
         int32 minSoc = 2;
     }
@@ -1280,6 +1302,7 @@ message NrgcpSolarchargingTypes {
         DeviceType deviceType = 10;
         string host = 2;
         int32 id = 7;
+        string mac = 11;
         string model = 3;
         string name = 4;
         int32 port = 6;
@@ -1314,6 +1337,7 @@ message NrgcpSolarchargingTypes {
     message EnergyMeterInfo {
         optional DeviceInfo deviceInfo = 1;
         bool isInverted = 2;
+        bool measureWithoutPnrgkick = 4;
         MeterLocation meterLocation = 3;
     }
     message FullScanInfo {
@@ -1328,6 +1352,7 @@ message NrgcpSolarchargingTypes {
         repeated EnergyMeterInfo emInfos = 7;
         string host = 3;
         repeated SolarInverterInfo invInfos = 6;
+        string mac = 10;
         PingResult pingResult = 5;
         int32 port = 4;
         repeated SmartLoadInfo slInfos = 9;
@@ -1415,7 +1440,9 @@ message NrgcpSolarchargingTypes {
         optional DeviceInfo deviceInfo = 1;
     }
     message SmartLoadTempSettings {
+        bool considerMaxSlPower = 4;
         bool enabled = 1;
+        int32 maxSlPower = 5;
         int32 maxTemp = 3;
         int32 minTemp = 2;
     }
