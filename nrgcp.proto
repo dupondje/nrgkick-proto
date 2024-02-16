@@ -1245,6 +1245,7 @@ message NrgcpSolarchargingTypes {
         MODBUS_SUB_2_2_API_TYPE = 12;
         DXS_API_TYPE = 13;
         UDP_API_TYPE = 14;
+        JSON_API_SUB_0_TYPE = 15;
     }
     message AuthSettings {
         string pw = 2;
@@ -1276,6 +1277,9 @@ message NrgcpSolarchargingTypes {
         MEC = 7;
         CUSTOM = 8;
         HUAWEI = 9;
+        SHELLY = 10;
+        SUNGROW = 11;
+        VICTRON = 12;
     }
     message ChargeMinSettings {
         ChargeMinType chargeMinType = 1;
@@ -1484,6 +1488,7 @@ message NrgcpSolarchargingTypes {
     message SolarSettings {
         int32 avgLoadW = 1;
         BatterySocSettings batterySocSettings = 8;
+        bool calculateLoadPower = 12;
         ChargeMinSettings chargeMinSettings = 6;
         DynamicPeakManagerSettings dynamicPeakManagerSettings = 10;
         int32 globalOffsetW = 2;
