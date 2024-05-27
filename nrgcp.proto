@@ -1280,6 +1280,8 @@ message NrgcpSolarchargingTypes {
         SHELLY = 10;
         SUNGROW = 11;
         VICTRON = 12;
+        SOLARX = 13;
+        GROWAT = 14;
     }
     message ChargeMinSettings {
         ChargeMinType chargeMinType = 1;
